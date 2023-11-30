@@ -1,14 +1,16 @@
 import { APIResponse, request } from "@playwright/test"
+import { url } from "inspector"
 
 export class ApiService {
 
-
-    post = async <T extends object>(url: string, data?: T): Promise<APIResponse> => {
+    post = async <T>(url: string, data: T) => {
         const context = await request.newContext();
-        const response = await context.post(`${url}`, { data: data })
-        console.log(await response.json())
-        const state = await context.storageState();
-        return await response
-    }
+        const res = await context.post(url, { data });
+        await context.storageState()
+        return await res;
+    };
+
+
+
 
 }

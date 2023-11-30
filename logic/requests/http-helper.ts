@@ -4,6 +4,8 @@ import * as uc from "../../infra/res/user-cred.json"
 import { LoginRes } from "../response/interface/login-interface-res"
 import { APIResponse, Page } from "playwright/test"
 import { BasePage } from "../pages/base-page"
+import { createShoe } from "./interface/add-item-req"
+import { AddItemRes } from "../response/interface/add-item-res"
 
 const api = new ApiService()
 
@@ -14,41 +16,51 @@ export class HttpHelper extends BasePage {
     }
 
     login = async () => {
-        // await api.post('https://www.terminalx.com/pg/QueryGlobalUserInfo')
         const cred = createLogin(uc.email, uc.password)
         const res: APIResponse = await api.post('https://www.terminalx.com/pg/MutationUserLogin', cred)
+        const phpSessionIdMatch = await res.headers()['set-cookie'].match(/PHPSESSID=([^;]+)/);
+        const phpSessionIdValue = phpSessionIdMatch && phpSessionIdMatch[1];
+        if (phpSessionIdValue) {
+            const cookies = [{
+                name: 'PHPSESSID',
+                value: phpSessionIdValue,
+                domain: '.www.terminalx.com',
+                path: '/'
 
-        // const responseHeaders = await res.headers()
-        // const setCookieHeader: string = responseHeaders['set-cookie'];
-        // const matches: RegExpMatchArray | null = setCookieHeader.match(/private_content_version=([^;]*)/);
-        // const privateContentVersion: string | null = matches && matches[1];
+            }];
 
-        // // console.log('private_content_version:', privateContentVersion);
-        // await this.setCoockie(privateContentVersion)
-        // console.log(await this.getCoockie())
-
-        //const userinfo = createUserInfo()
-        //const res1: APIResponse = await api.post('https://www.terminalx.com/pg/QueryCurrentUserInfo?v=Vy487KOB%2FsDB%2F0cFkmdYWkLOsB8%3D', userinfo)
-        //console.log(await res1.headers())
-        //console.log(await res1.json())
-        // const UserInfoWithCart = createUserInfoWithCart()
-        // const res2 = await api.post('https://www.terminalx.com/pg/QueryCurrentUserInfo?v=Vy487KOB%2FsDB%2F0cFkmdYWkLOsB8%3D', UserInfoWithCart)
-        // console.log(res2)
-        // const res3 = await api.post('https://www.terminalx.com/pg/QueryCustomerProfileInfo?v=iSq3Kg1yB0hbFZqnlJaWhv8HFzM%3D')
-        // console.log(res3)
-        // const userInfoWithAll = createUserInfoWithCart()
-        // const res4 = await api.post('https://www.terminalx.com/pg/QueryCurrentUserInfo?v=Vy487KOB%2FsDB%2F0cFkmdYWkLOsB8%3D', userInfoWithAll)
-        // console.log(res4)
+            await this.page.context().addCookies(cookies);
+        }
+        const userInfo = await createUserInfo()
+        await api.post('https://www.terminalx.com/pg/QueryCurrentUserInfo', userInfo)
     }
-    setCoockie = async (value: string | null) => {
-        await this.page.evaluate((newValue) => {
-            localStorage.setItem('private_content_version', newValue || '');
-        }, value);
+
+    addItem = async (sku: string, values: string) => {
+        const data = createShoe(sku, values)
+        const res: APIResponse = await api.post('https://www.terminalx.com/pg/MutationAddProductsToWishlist', data)
+        const ds: AddItemRes = await res.json()
+        console.log(ds.data.addProductsToWishlist.anyWishlist.items[0])
     }
+
+    setCoockie = async (name: string | null, value: string | null) => {
+        if (name !== null && value !== null) {
+            await this.page.evaluate(({ newName, newValue }) => {
+                localStorage.setItem(newName, newValue || '');
+            }, { newName: name, newValue: value });
+        } else {
+            console.error('Invalid name or value provided.');
+        }
+    }
+
+
+
     getCoockie = async () => {
-        await this.page.evaluate(() => {
-            localStorage.getItemItem('private_content_version');
+        const privateContentVersion = await this.page.evaluate(() => {
+            return localStorage.getItem('private_content_version');
         });
+
+        return privateContentVersion;
     }
+
 
 }
