@@ -6,6 +6,7 @@ import { APIResponse, Page } from "playwright/test"
 import { BasePage } from "../pages/base-page"
 import { createShoe } from "./interface/add-item-req"
 import { AddItemRes } from "../response/interface/add-item-res"
+import { RemoveItemRes } from "../response/interface/remove-item-res"
 
 const api = new ApiService()
 
@@ -35,32 +36,17 @@ export class HttpHelper extends BasePage {
         await api.post('https://www.terminalx.com/pg/QueryCurrentUserInfo', userInfo)
     }
 
-    addItem = async (sku: string, values: string) => {
+    addItem = async (sku: string, values: string): Promise<number> => {
         const data = createShoe(sku, values)
         const res: APIResponse = await api.post('https://www.terminalx.com/pg/MutationAddProductsToWishlist', data)
         const ds: AddItemRes = await res.json()
-        console.log(ds.data.addProductsToWishlist.anyWishlist.items[0])
+        return ds.data.addProductsToWishlist.anyWishlist.items[0].id
     }
-
-    setCoockie = async (name: string | null, value: string | null) => {
-        if (name !== null && value !== null) {
-            await this.page.evaluate(({ newName, newValue }) => {
-                localStorage.setItem(newName, newValue || '');
-            }, { newName: name, newValue: value });
-        } else {
-            console.error('Invalid name or value provided.');
-        }
+    removeItem = async (id: number): Promise<number> => {
+        const data = this.removeItem(id)
+        const res: APIResponse = await api.post('https://www.terminalx.com/pg/MutationRemoveProductsFromAnyWishlistById', data)
+        const ds: RemoveItemRes = await res.json()
+        return ds.data.removeProductsFromAnyWishlistById.anyWishlist.items_count
     }
-
-
-
-    getCoockie = async () => {
-        const privateContentVersion = await this.page.evaluate(() => {
-            return localStorage.getItem('private_content_version');
-        });
-
-        return privateContentVersion;
-    }
-
 
 }

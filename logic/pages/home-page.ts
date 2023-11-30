@@ -3,11 +3,10 @@ import { BasePage } from "./base-page";
 const BASE_URL = 'https://www.terminalx.com/';
 
 
-export class HomePage {
+export class HomePage extends BasePage {
 
-    private page: Page
     constructor(page: Page) {
-        this.page = page
+        super(page)
     }
 
     goto = async (): Promise<void> => {
