@@ -1,4 +1,4 @@
-export interface RemoveItemRes {
+export interface RemoveItemWishListRes {
     data: Data
 }
 
