@@ -31,5 +31,10 @@ test.describe('Testing Terminal-X', async () => {
         await hp.removeItemFromCart(parseInt(ls[0].id))
         await page.reload()
     })
+    test('get Items', async ({ page }) => {
+        const hp = new HttpHelper(page)
+        console.log(await hp.getAllItemsSKU("189"))
+    })
 
 })
+

@@ -21,6 +21,3 @@ Clone this repository to your local machine.
 3) fill the user-login.json with your credentials.
 3) command: npm run test - to execute the tests
 
-
-# Contributing
-Contributions are welcome! If you'd like to contribute to this project, please follow the usual GitHub pull request process.

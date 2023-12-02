@@ -38,16 +38,3 @@ const addItemToCart = (sku: string): AddItemCart => {
     }
 }
 export { AddItem, createShoe, AddItemCart, addItemToCart }
-
-//93 men shoes
-// {
-//     "sku": [
-//         "W150580001"
-//     ],
-//     "attributes": [
-//         "93"
-//     ],
-//     "values": [
-//         "4"
-//     ]
-// }
