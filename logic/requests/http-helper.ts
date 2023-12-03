@@ -1,3 +1,4 @@
+import { Item } from './../response/interface/user-info-res';
 import { ApiService } from "../../infra/requests/api-service"
 import { createLogin, createUserinfoWithAllDetails } from "./interface/login-interface-req"
 import * as uc from "../../infra/res/user-cred.json"
@@ -8,11 +9,12 @@ import { AddItemWishListRes } from "../response/interface/add-item-wishlist-res"
 import { RemoveItemWishListRes } from "../response/interface/remove-item-wishlist-res"
 import { removeItemWishList, removeItemFromCart } from "./interface/remove-item-req"
 import { AddItemCartRes } from "../response/interface/add-item-cart-res"
-import { UserInfoRes, Item } from "../response/interface/user-info-res"
+import { UserInfoRes } from "../response/interface/user-info-res"
 import { RemoveItemCartRes } from "../response/interface/remove-item-cart-res"
 import { getItemDetails } from "./interface/item-details-req"
 import { ItemDetailsRes, ItemP } from "../response/interface/item-details-res"
 import { WishListRes, ItemW } from "../response/interface/wishlist-data-res"
+import { promises } from "dns"
 
 const api = new ApiService()
 const LOGIN_URL = 'https://www.terminalx.com/pg/MutationUserLogin'
@@ -25,7 +27,7 @@ const USER_INFO = 'https://www.terminalx.com/pg/QueryCurrentUserInfo'
 const LIST_OF_ITEMS = 'https://www.terminalx.com/a/listingSearch'
 
 export class HttpHelper extends BasePage {
-    private wishList: number[] = [];
+    private wishList: string[] = [];
 
     constructor(page: Page) {
         super(page)
@@ -52,7 +54,7 @@ export class HttpHelper extends BasePage {
         const data = createShoe(sku, values)
         const res: APIResponse = await api.post(ADD_PRODUCT_WISH_LIST_URL, data)
         const ds: AddItemWishListRes = await res.json()
-        this.wishList.push(ds.data.addProductsToWishlist.anyWishlist.items[0].id)
+        this.wishList.push(ds.data.addProductsToWishlist.anyWishlist.items[0].product.variants[0].product.name)
         return ds.data.addProductsToWishlist.anyWishlist.items[0].id
     }
     addItemToCart = async (sku: string): Promise<void> => {
@@ -107,6 +109,12 @@ export class HttpHelper extends BasePage {
         ls.forEach((item) => skus.push(item.sku));
         return skus
     }
-
+    getAllItemsNames = async (): Promise<Array<string>> => {
+        return this.wishList
+    }
+    verifyItemExistsInWishList = async(name: string):Promise<boolean> => {
+        let lis= this.wishList.filter(item=> item==name )
+        return lis.length > 0;
+    };
 
 }
