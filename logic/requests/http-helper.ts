@@ -1,3 +1,4 @@
+import { Item } from './../response/interface/user-info-res';
 import { ApiService } from "../../infra/requests/api-service"
 import { createLogin, createUserinfoWithAllDetails } from "./interface/login-interface-req"
 import * as uc from "../../infra/res/user-cred.json"
@@ -8,7 +9,7 @@ import { AddItemWishListRes } from "../response/interface/add-item-wishlist-res"
 import { RemoveItemWishListRes } from "../response/interface/remove-item-wishlist-res"
 import { removeItemWishList, removeItemFromCart } from "./interface/remove-item-req"
 import { AddItemCartRes } from "../response/interface/add-item-cart-res"
-import { UserInfoRes, Item } from "../response/interface/user-info-res"
+import { UserInfoRes } from "../response/interface/user-info-res"
 import { RemoveItemCartRes } from "../response/interface/remove-item-cart-res"
 import { getItemDetails } from "./interface/item-details-req"
 import { ItemDetailsRes, ItemP } from "../response/interface/item-details-res"
@@ -52,7 +53,7 @@ export class HttpHelper extends BasePage {
         const data = createShoe(sku, values)
         const res: APIResponse = await api.post(ADD_PRODUCT_WISH_LIST_URL, data)
         const ds: AddItemWishListRes = await res.json()
-        this.wishList.push(ds.data.addProductsToWishlist.anyWishlist.items[0].product.description.html)
+        this.wishList.push(ds.data.addProductsToWishlist.anyWishlist.items[0].product.variants[0].product.name)
         return ds.data.addProductsToWishlist.anyWishlist.items[0].id
     }
     addItemToCart = async (sku: string): Promise<void> => {
@@ -115,11 +116,10 @@ export class HttpHelper extends BasePage {
     getAllItemsNames = async (): Promise<Array<string>> => {
         return this.wishList
     }
-    verifyItemExistsInWishList = async (name: string): boolean => {
-        const regex = new RegExp(name);
-        return this.wishList.some(item => regex.test(item));
+
+    verifyItemExistsInWishList = async (name: string): Promise<boolean> => {
+        let lis = this.wishList.filter(item => item == name)
+        return lis.length > 0;
     };
-
-
 
 }
