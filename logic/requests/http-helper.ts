@@ -25,7 +25,7 @@ const USER_INFO = 'https://www.terminalx.com/pg/QueryCurrentUserInfo'
 const LIST_OF_ITEMS = 'https://www.terminalx.com/a/listingSearch'
 
 export class HttpHelper extends BasePage {
-    private wishList: number[] = [];
+    private wishList: string[] = [];
 
     constructor(page: Page) {
         super(page)
@@ -52,7 +52,7 @@ export class HttpHelper extends BasePage {
         const data = createShoe(sku, values)
         const res: APIResponse = await api.post(ADD_PRODUCT_WISH_LIST_URL, data)
         const ds: AddItemWishListRes = await res.json()
-        this.wishList.push(ds.data.addProductsToWishlist.anyWishlist.items[0].id)
+        this.wishList.push(ds.data.addProductsToWishlist.anyWishlist.items[0].product.description.html)
         return ds.data.addProductsToWishlist.anyWishlist.items[0].id
     }
     addItemToCart = async (sku: string): Promise<void> => {
@@ -103,10 +103,23 @@ export class HttpHelper extends BasePage {
         const res: APIResponse = await api.post(LIST_OF_ITEMS, data)
         const ds: ItemDetailsRes = await res.json()
         const ls: Array<ItemP> = ds.data.products.items
-        const skus: string[] = [];
-        ls.forEach((item) => skus.push(item.sku));
-        return skus
+        const skus: Record<string, object[]>[] = [];
+        ls.forEach((item) => {
+            const skuObject: Record<string, object[]> = {};
+            skuObject[item.sku] = Object.values(item.inStockSkuVariantsBy);
+            skus.push(skuObject);
+        });
+        skus.forEach((x) => console.log(x))
+        return skus;
     }
+    getAllItemsNames = async (): Promise<Array<string>> => {
+        return this.wishList
+    }
+    verifyItemExistsInWishList = async (name: string): boolean => {
+        const regex = new RegExp(name);
+        return this.wishList.some(item => regex.test(item));
+    };
+
 
 
 }
