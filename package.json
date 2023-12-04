@@ -4,17 +4,20 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "npx playwright test"
+    "test": "npx playwright test",
+    "test allure": "npx playwright test --reporter=allure-playwright"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "allure-playwright": "^2.9.2",
     "playwright": "^1.40.0",
     "typescript": "^5.3.2"
   },
   "devDependencies": {
     "@playwright/test": "^1.40.0",
-    "@types/node": "^20.10.0"
+    "@types/node": "^20.10.0",
+    "allure-commandline": "^2.24.1"
   }
 }
