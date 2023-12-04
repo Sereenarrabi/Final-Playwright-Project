@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "npx playwright test",
-    "test allure": "npx playwright test --reporter=allure-playwright"
+    "allure": "npx allure generate ./allure-results --clean && npx allure open ./allure-report"
   },
   "keywords": [],
   "author": "",

@@ -68,6 +68,11 @@ export class HttpHelper extends BasePage {
         const ds: UserInfoRes = await res.json()
         return ds.data.currentUserInfo.cart_items_count
     }
+    getWishListCount = async (): Promise<number> => {
+        const res = await api.post(WISHLIST_DATA)
+        const ds: WishListRes = await res.json()
+        return ds.data.anyWishlist.items_count
+    }
     removeItemFromWishList = async (id: number): Promise<number> => {
         const data = removeItemWishList(id)
         const res: APIResponse = await api.post(REMOVE_PRODUCT_WISH_LIST_URL, data)
@@ -91,7 +96,6 @@ export class HttpHelper extends BasePage {
         const ds: WishListRes = await res.json()
         const ls: Array<ItemW> = ds.data.anyWishlist.items
         ls.forEach(async (item) => { await this.removeItemFromWishList(item.id) })
-
     }
     getItemDetails = async (): Promise<Array<Item>> => {
         const data = createUserinfoWithAllDetails()
@@ -112,8 +116,8 @@ export class HttpHelper extends BasePage {
     getAllItemsNames = async (): Promise<Array<string>> => {
         return this.wishList
     }
-    verifyItemExistsInWishList = async(name: string):Promise<boolean> => {
-        let lis= this.wishList.filter(item=> item==name )
+    verifyItemExistsInWishList = async (name: string | null): Promise<boolean> => {
+        let lis = this.wishList.filter(item => item == name)
         return lis.length > 0;
     };
 
