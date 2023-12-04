@@ -7,7 +7,7 @@ export class HomePage extends BasePage {
     private categorySelectionFromNav = (category: string) => this.page.locator(`//nav/ul/li/a[text() = '${category}']`)
     private subchose = (KidGender: string, clothingOption: string) => this.page.locator(`//ul/li/a[text() = '${KidGender}']/parent::li/ul/li/a[text() ='${clothingOption}']`)
     private subCat = (SubCategory: string, item: string) => this.page.locator(`//a[@href="${SubCategory}"]/parent::li/ul/li/a[text() = "${item}"]`)
-    private wishListButton:Locator
+    private wishListButton: Locator
     private itemName: Locator
     constructor(page: Page) {
         super(page)
@@ -37,10 +37,11 @@ export class HomePage extends BasePage {
     subCategorySelector = async (SubCategory: string, item: string) => {
         await this.subCat(SubCategory, item).click()
     }
-    async goToWichList (){
+    async navigateToWishListPage() {
         await this.wishListButton.click();
     }
-    async getItemNameFromWishListByIndex (num:number){
+    getItemNameFromWishListByIndex = async (num: number) => {
         return await this.itemName.nth(num).textContent();
     }
+
 }
