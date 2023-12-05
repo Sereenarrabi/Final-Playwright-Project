@@ -8,11 +8,17 @@ export class HomePage extends BasePage {
     private subchose = (KidGender: string, clothingOption: string) => this.page.locator(`//ul/li/a[text() = '${KidGender}']/parent::li/ul/li/a[text() ='${clothingOption}']`)
     private subCat = (SubCategory: string, item: string) => this.page.locator(`//a[@href="${SubCategory}"]/parent::li/ul/li/a[text() = "${item}"]`)
     private wishListButton: Locator
-    private itemName: Locator
+    private itemNameWishlist: Locator
+    private cartOptions: Locator
+    private cartButton:Locator
+    private itemNameCart:Locator
     constructor(page: Page) {
         super(page)
-        this.wishListButton = this.page.locator("//a[@class='tx-link-a link_2L32 link-wishlist_1lmB tx-link_29YD']")
-        this.itemName = this.page.locator("//a[@class='tx-link-a title_3ZxJ roboto-font_h7Lu tx-link_29YD underline-hover_3GkV']")
+        this.wishListButton = this.page.locator("//a[@data-test-id='qa-link-wishlist']")
+        this.itemNameWishlist = this.page.locator("//a[@class='tx-link-a title_3ZxJ roboto-font_h7Lu tx-link_29YD underline-hover_3GkV']")
+        this.cartOptions = this.page.locator("//a[@data-test-id='qa-link-minicart']")
+        this.cartButton = this.page.locator("//a[@data-test-id='qa-minicart-cart-button']")
+        this.itemNameCart = this.page.locator("//a[@data-test-id='qa-cart-product-name']")
     }
 
     goto = async (): Promise<void> => {
@@ -40,8 +46,16 @@ export class HomePage extends BasePage {
     async navigateToWishListPage() {
         await this.wishListButton.click();
     }
-    getItemNameFromWishListByIndex = async (num: number) => {
-        return await this.itemName.nth(num).textContent();
+    getitemNameFromWishListByIndex = async (num: number) => {
+        return await this.itemNameWishlist.nth(num).textContent();
     }
+    async navigateToCartPage(){
+        await this.cartOptions.click()
+        await this.cartButton.click()
+    }
+    async getItemNameFromCartByIndex(num:number){
+        return await this.itemNameCart.nth(num).textContent()
+    }
+
 
 }

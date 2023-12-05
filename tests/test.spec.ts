@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test"
+import { Page, expect, test } from "@playwright/test"
 import { HomePage } from "../logic/pages/home-page"
 import { HttpHelper } from "../logic/requests/http-helper"
 import { before } from "node:test"
@@ -48,12 +48,21 @@ test.describe('Testing Terminal-X', async () => {
             await hp.clearCart()
 
         })
-        test("add item throgh api validate throgh ui ", async ({ page }) => {
+        test("add item throgh api validate throgh ui-wishList ", async ({ page }) => {
             const api = new HttpHelper(page)
             await api.addItemToWishList("W142310027", "2148")
             await home.navigateToWishListPage()
-            let text = await home.getItemNameFromWishListByIndex(0)
+            let text = await home.getitemNameFromWishListByIndex(0)
             expect(await api.verifyItemExistsInWishList(text)).toBeTruthy()
+        })
+        test("add item throgh api validate via ui -Cart", async ({page}) => {
+            const api = new HttpHelper(page)
+            await home.navigateToCartPage()
+            await api.addItemToCart("W13547201504")
+            await api.getCartItemName()
+            let name= await home.getItemNameFromCartByIndex(0)
+            expect(await api.getCartItemName()).toBe(name)
+            
         })
 
     })

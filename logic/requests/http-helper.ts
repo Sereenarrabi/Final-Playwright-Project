@@ -124,5 +124,12 @@ export class HttpHelper extends BasePage {
         let lis = this.wishList.filter(item => item == name)
         return lis.length > 0;
     };
+    getCartItemName = async (): Promise<string> => {
+        const data = createUserinfoWithAllDetails()
+        const res: APIResponse = await api.post(USER_INFO, data)
+        const ds: UserInfoRes = await res.json()
+
+        return ds.data.currentUserInfo.cart_object.items[0].product.thumbnail.label
+    }
 
 }
