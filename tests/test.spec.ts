@@ -1,7 +1,13 @@
+import { Color } from './../logic/response/interface/wishlist-data-res';
+import { FilterBy } from './../logic/pages/Enums/filterByEnum/ColorsEnum/filterBy';
+import { WomenSubCategory, PANTS } from './../logic/pages/Enums/WomenEnum/subCategoryForWomen';
 import { Page, expect, test } from "@playwright/test"
 import { HomePage } from "../logic/pages/home-page"
 import { HttpHelper } from "../logic/requests/http-helper"
 import { before } from "node:test"
+import { Category } from "../logic/pages/Enums/CategoryEnum"
+import { ProductPage } from '../logic/pages/ProductsPage';
+import { Colors } from '../logic/pages/Enums/filterByEnum/ColorsEnum/Colors';
 
 test.describe('Testing Terminal-X', async () => {
 
@@ -57,12 +63,20 @@ test.describe('Testing Terminal-X', async () => {
         })
         test("add item throgh api validate via ui -Cart", async ({page}) => {
             const api = new HttpHelper(page)
+            await api.addItemToCart("Z90074626005")
+            await home.reload()
             await home.navigateToCartPage()
-            await api.addItemToCart("W13547201504")
             await api.getCartItemName()
             let name= await home.getItemNameFromCartByIndex(0)
             expect(await api.getCartItemName()).toBe(name)
-            
+        })
+        test("addd",async({page})=>{
+            await home.hoverOverCategory(Category.WOMEN)
+            await home.subCategorySelector(WomenSubCategory.WOMEN_PANTS,PANTS.JEANS)
+            const product = new ProductPage(page)
+            await product.filterBy(FilterBy.COLOR)
+            await product.selectColor(Colors.BLACK)
+            await page.pause()
         })
 
     })
