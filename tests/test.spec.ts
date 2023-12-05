@@ -54,23 +54,20 @@ test.describe('Testing Terminal-X', async () => {
             await hp.clearCart()
 
         })
-        test("add item throgh api validate throgh ui ", async ({ page }) => {
+        test("add item throgh api validate throgh ui - wishlist ", async ({ page }) => {
             const api = new HttpHelper(page)
             await api.addItemToWishList("W142310027", "2148")
             await home.navigateToWishListPage()
             let text = await home.getitemNameFromWishListByIndex(0)
-            expect(await api.verifyItemExistsInWishList(text)).toBeTruthy()
+            expect(await api.verifyItemExistsInWishList(text))
         })
         test("add item throgh api validate via ui -Cart", async ({ page }) => {
             const api = new HttpHelper(page)
             await api.addItemToCart("Z90074626005")
-            await home.reload()
             await home.navigateToCartPage()
-            await api.getCartItemName()
             let name = await home.getItemNameFromCartByIndex(0)
-            expect(await api.getCartItemName()).toBe(name)
+            expect(await api.verifyItemExistsInCart(name)).toBeTruthy()
         })
-
 
     })
     test.describe("Ui Tests", async () => {

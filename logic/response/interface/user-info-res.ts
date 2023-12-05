@@ -52,11 +52,11 @@ export interface CartObject {
     id: string
     email: string
     max_dc_points: number
-    items: Item[]
+    items: ItemC[]
     minicart_subtotal: number
 }
 
-export interface Item {
+export interface ItemC {
     __typename: string
     id: string
     product: Product

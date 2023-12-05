@@ -10,8 +10,9 @@ export class HomePage extends BasePage {
     private wishListButton: Locator
     private itemNameWishlist: Locator
     private cartOptions: Locator
-    private cartButton:Locator
-    private itemNameCart:Locator
+    private cartButton: Locator
+    private itemNameCart: Locator
+
     constructor(page: Page) {
         super(page)
         this.wishListButton = this.page.locator("//a[@data-test-id='qa-link-wishlist']")
@@ -30,11 +31,7 @@ export class HomePage extends BasePage {
 
     hoverOverCategory = async (category: string) => {
         await this.categorySelectionFromNav(category).hover()
-
-
     }
-
-
 
     selectFromSubCategory = async (KidGender: string, clothingOption: string) => {
         await this.subchose(KidGender, clothingOption).click()
@@ -43,17 +40,18 @@ export class HomePage extends BasePage {
     subCategorySelector = async (SubCategory: string, item: string) => {
         await this.subCat(SubCategory, item).click()
     }
-    async navigateToWishListPage() {
+    navigateToWishListPage = async () => {
         await this.wishListButton.click();
     }
     getitemNameFromWishListByIndex = async (num: number) => {
         return await this.itemNameWishlist.nth(num).textContent();
     }
-    async navigateToCartPage(){
+    navigateToCartPage = async () => {
         await this.cartOptions.click()
+        await this.waitLocator("//a[@data-test-id='qa-minicart-cart-button']")
         await this.cartButton.click()
     }
-    async getItemNameFromCartByIndex(num:number){
+    getItemNameFromCartByIndex = async (num: number) => {
         return await this.itemNameCart.nth(num).textContent()
     }
 

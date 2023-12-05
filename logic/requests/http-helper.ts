@@ -1,15 +1,14 @@
-import { Item } from './../response/interface/user-info-res';
 import { ApiService } from "../../infra/requests/api-service"
 import { createLogin, createUserinfoWithAllDetails } from "./interface/login-interface-req"
 import * as uc from "../../infra/res/user-cred.json"
 import { APIResponse, Page } from "playwright/test"
 import { BasePage } from "../pages/base-page"
 import { createShoe, addItemToCart } from "./interface/add-item-req"
-import { AddItemWishListRes } from "../response/interface/add-item-wishlist-res"
+import { AddItemWishListRes, Item } from "../response/interface/add-item-wishlist-res"
 import { RemoveItemWishListRes } from "../response/interface/remove-item-wishlist-res"
 import { removeItemWishList, removeItemFromCart } from "./interface/remove-item-req"
 import { AddItemCartRes } from "../response/interface/add-item-cart-res"
-import { UserInfoRes } from "../response/interface/user-info-res"
+import { UserInfoRes, ItemC } from "../response/interface/user-info-res"
 import { RemoveItemCartRes } from "../response/interface/remove-item-cart-res"
 import { getItemDetails } from "./interface/item-details-req"
 import { ItemDetailsRes, ItemP } from "../response/interface/item-details-res"
@@ -87,7 +86,7 @@ export class HttpHelper extends BasePage {
         const data = createUserinfoWithAllDetails()
         const res: APIResponse = await api.post(USER_INFO, data)
         const ds: UserInfoRes = await res.json()
-        const ls: Array<Item> = ds.data.currentUserInfo.cart_object.items
+        const ls: Array<ItemC> = ds.data.currentUserInfo.cart_object.items
         ls.forEach(async (item) => await this.removeItemFromCart(parseInt(item.id)))
     }
     clearWishList = async (): Promise<void> => {
@@ -96,14 +95,14 @@ export class HttpHelper extends BasePage {
         const ls: Array<ItemW> = ds.data.anyWishlist.items
         ls.forEach(async (item) => { await this.removeItemFromWishList(item.id) })
     }
-    getItemDetails = async (): Promise<Array<Item>> => {
+    getItemDetails = async (): Promise<Array<ItemC>> => {
         const data = createUserinfoWithAllDetails()
         const res: APIResponse = await api.post(USER_INFO, data)
         const ds: UserInfoRes = await res.json()
-        const ls: Array<Item> = ds.data.currentUserInfo.cart_object.items
+        const ls: Array<ItemC> = ds.data.currentUserInfo.cart_object.items
         return ls
     }
-    getAllItemsSKU = async (category_id: string) => {
+    getAllItemsSKU = async (category_id: string): Promise<Record<string, object[]>[]> => {
         const data = getItemDetails(category_id)
         const res: APIResponse = await api.post(LIST_OF_ITEMS, data)
         const ds: ItemDetailsRes = await res.json()
@@ -122,14 +121,15 @@ export class HttpHelper extends BasePage {
     }
     verifyItemExistsInWishList = async (name: string | null): Promise<boolean> => {
         let lis = this.wishList.filter(item => item == name)
-        return lis.length > 0;
+        return lis.length == 1;
     };
-    getCartItemName = async (): Promise<string> => {
+    verifyItemExistsInCart = async (name: string | null): Promise<boolean> => {
         const data = createUserinfoWithAllDetails()
         const res: APIResponse = await api.post(USER_INFO, data)
         const ds: UserInfoRes = await res.json()
-
-        return ds.data.currentUserInfo.cart_object.items[0].product.thumbnail.label
+        const ls: Array<ItemC> = ds.data.currentUserInfo.cart_object.items
+        const temp = ls.filter((item) => item.product.thumbnail.label == name)
+        return temp.length == 1
     }
 
 }

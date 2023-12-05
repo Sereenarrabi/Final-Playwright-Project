@@ -15,8 +15,10 @@ export class BasePage {
     reload = async (): Promise<void> => {
         await this.page.reload()
     }
-    wait = async (time: number): Promise<void> => {
+    waitTimeout = async (time: number): Promise<void> => {
         await this.page.waitForTimeout(time)
     }
-
+    waitLocator = async (locator: string) => {
+        await this.page.waitForSelector(locator)
+    }
 }
