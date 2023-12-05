@@ -1,7 +1,6 @@
 import { expect, test } from "@playwright/test"
 import { HomePage } from "../logic/pages/home-page"
 import { HttpHelper } from "../logic/requests/http-helper"
-import { before } from "node:test"
 
 test.describe('Testing Terminal-X', async () => {
 
@@ -33,7 +32,7 @@ test.describe('Testing Terminal-X', async () => {
         })
         test('get Items', async ({ page }) => {
             const hp = new HttpHelper(page)
-            console.log(await hp.getAllItemsSKU("189"))
+            expect(await hp.getAllItemsSKU("189")).not.toBeNull()
         })
     })
     test.describe("full flow tests - e2e ", () => {
@@ -48,7 +47,7 @@ test.describe('Testing Terminal-X', async () => {
             await hp.clearCart()
 
         })
-        test("add item throgh api validate throgh ui ", async ({ page }) => {
+        test("add item throgh api validate throgh ui - wishlist ", async ({ page }) => {
             const api = new HttpHelper(page)
             await api.addItemToWishList("W142310027", "2148")
             await home.navigateToWishListPage()
