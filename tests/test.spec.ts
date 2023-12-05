@@ -1,6 +1,10 @@
-import { expect, test } from "@playwright/test"
+import { Color } from './../logic/response/interface/wishlist-data-res';
+import { FilterBy } from './../logic/pages/Enums/filterByEnum/ColorsEnum/filterBy';
+import { WomenSubCategory, PANTS } from './../logic/pages/Enums/WomenEnum/subCategoryForWomen';
+import { Page, expect, test } from "@playwright/test"
 import { HomePage } from "../logic/pages/home-page"
 import { HttpHelper } from "../logic/requests/http-helper"
+import { before } from "node:test"
 
 test.describe('Testing Terminal-X', async () => {
 
@@ -47,12 +51,29 @@ test.describe('Testing Terminal-X', async () => {
             await hp.clearCart()
 
         })
-        test("add item throgh api validate throgh ui - wishlist ", async ({ page }) => {
+        test("add item throgh api validate throgh ui ", async ({ page }) => {
             const api = new HttpHelper(page)
             await api.addItemToWishList("W142310027", "2148")
             await home.navigateToWishListPage()
-            let text = await home.getItemNameFromWishListByIndex(0)
+            let text = await home.getitemNameFromWishListByIndex(0)
             expect(await api.verifyItemExistsInWishList(text)).toBeTruthy()
+        })
+        test("add item throgh api validate via ui -Cart", async ({ page }) => {
+            const api = new HttpHelper(page)
+            await api.addItemToCart("Z90074626005")
+            await home.reload()
+            await home.navigateToCartPage()
+            await api.getCartItemName()
+            let name = await home.getItemNameFromCartByIndex(0)
+            expect(await api.getCartItemName()).toBe(name)
+        })
+        test("addd", async ({ page }) => {
+            await home.hoverOverCategory(Category.WOMEN)
+            await home.subCategorySelector(WomenSubCategory.WOMEN_PANTS, PANTS.JEANS)
+            const product = new ProductPage(page)
+            await product.filterBy(FilterBy.COLOR)
+            await product.selectColor(Colors.BLACK)
+            await page.pause()
         })
 
     })
