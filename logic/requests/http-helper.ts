@@ -11,7 +11,7 @@ import { AddItemCartRes } from "../response/interface/add-item-cart-res"
 import { UserInfoRes, ItemC } from "../response/interface/user-info-res"
 import { RemoveItemCartRes } from "../response/interface/remove-item-cart-res"
 import { getItemDetails } from "./interface/item-details-req"
-import { ItemDetailsRes, ItemP } from "../response/interface/item-details-res"
+import { ItemDetailsRes, ItemP, Color } from "../response/interface/item-details-res"
 import { WishListRes, ItemW } from "../response/interface/wishlist-data-res"
 
 const api = new ApiService()
@@ -102,20 +102,19 @@ export class HttpHelper extends BasePage {
         const ls: Array<ItemC> = ds.data.currentUserInfo.cart_object.items
         return ls
     }
-    getAllItemsSKU = async (category_id: string): Promise<Record<string, object[]>[]> => {
+    getAllItemsSKU = async (category_id: string): Promise<Record<string, Color>> => {
         const data = getItemDetails(category_id)
         const res: APIResponse = await api.post(LIST_OF_ITEMS, data)
         const ds: ItemDetailsRes = await res.json()
         const ls: Array<ItemP> = ds.data.products.items
-        const skus: Record<string, object[]>[] = [];
+        const skus: Record<string, Color> = {};
         ls.forEach((item) => {
-            const skuObject: Record<string, object[]> = {};
-            skuObject[item.sku] = Object.values(item.inStockSkuVariantsBy);
-            skus.push(skuObject);
+            const colorObject = item.inStockSkuVariantsBy.color;
+            skus[item.sku] = colorObject
         });
-        skus.forEach((x) => console.log(x))
+        console.log(skus)
         return skus;
-    }
+    }            // skuObject[item.sku] = item.inStockSkuVariantsBy.color;
     getAllItemsNames = async (): Promise<Array<string>> => {
         return this.wishList
     }

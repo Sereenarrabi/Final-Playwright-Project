@@ -46,9 +46,12 @@ export class HomePage extends BasePage {
     getitemNameFromWishListByIndex = async (num: number) => {
         return await this.itemNameWishlist.nth(num).textContent();
     }
-    navigateToCartPage = async () => {
+    clickOnCartIcon = async () => {
+        await this.reloadWithRetries(5, "//a[@data-test-id='qa-link-minicart']")
         await this.cartOptions.click()
-        await this.waitLocator("//a[@data-test-id='qa-minicart-cart-button']")
+    }
+    navigateToCartPage = async () => {
+        await this.reloadWithRetries(5, "//a[@data-test-id='qa-minicart-cart-button']")
         await this.cartButton.click()
     }
     getItemNameFromCartByIndex = async (num: number) => {

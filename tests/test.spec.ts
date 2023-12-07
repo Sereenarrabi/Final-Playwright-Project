@@ -63,14 +63,21 @@ test.describe('Testing Terminal-X', async () => {
         })
         test("add item throgh api validate via ui -Cart", async ({ page }) => {
             const api = new HttpHelper(page)
-            await api.addItemToCart("Z90074626005")
+            await api.addItemToCart("Z81883003001")
+            await home.reload()
+            await home.clickOnCartIcon()
             await home.navigateToCartPage()
             let name = await home.getItemNameFromCartByIndex(0)
             expect(await api.verifyItemExistsInCart(name)).toBeTruthy()
         })
-
     })
+
     test.describe("Ui Tests", async () => {
+
+        test.beforeEach('setUp the HomePage', async ({ page }) => {
+            home = new HomePage(page)
+            await home.goto()
+        })
         test("addd", async ({ page }) => {
             await home.hoverOverCategory(Category.WOMEN)
             await home.subCategorySelector(WomenSubCategory.WOMEN_PANTS, PANTS.JEANS)
