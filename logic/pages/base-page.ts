@@ -29,7 +29,6 @@ export class BasePage {
             }
             catch {
                 console.log("failed to locate");
-
             }
             num--
         }

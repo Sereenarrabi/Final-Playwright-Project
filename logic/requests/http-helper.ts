@@ -13,16 +13,18 @@ import { RemoveItemCartRes } from "../response/interface/remove-item-cart-res"
 import { getItemDetails } from "./interface/item-details-req"
 import { ItemDetailsRes, ItemP, Color } from "../response/interface/item-details-res"
 import { WishListRes, ItemW } from "../response/interface/wishlist-data-res"
+import { UserDetails } from "../response/interface/user-details-res"
 
 const api = new ApiService()
-const LOGIN_URL = 'https://www.terminalx.com/pg/MutationUserLogin'
-const ADD_PRODUCT_WISH_LIST_URL = 'https://www.terminalx.com/pg/MutationAddProductsToWishlist'
-const REMOVE_PRODUCT_WISH_LIST_URL = 'https://www.terminalx.com/pg/MutationRemoveProductsFromAnyWishlistById'
-const WISHLIST_DATA = 'https://www.terminalx.com/pg/QueryWishlist'
-const ADD_PRODUCT_CART_URL = 'https://www.terminalx.com/pg/MutationAddAnyProductsToAnyCart'
-const REMOVE_PRODUCT_CART = 'https://www.terminalx.com/pg/MutationRemoveItemFromAnyCart'
-const USER_INFO = 'https://www.terminalx.com/pg/QueryCurrentUserInfo'
-const LIST_OF_ITEMS = 'https://www.terminalx.com/a/listingSearch'
+const LOGIN_URL = uc.LOGIN_URL
+const ADD_PRODUCT_WISH_LIST_URL = uc.ADD_PRODUCT_WISH_LIST_URL
+const REMOVE_PRODUCT_WISH_LIST_URL = uc.REMOVE_PRODUCT_WISH_LIST_URL
+const WISHLIST_DATA = uc.WISHLIST_DATA
+const ADD_PRODUCT_CART_URL = uc.ADD_PRODUCT_CART_URL
+const REMOVE_PRODUCT_CART = uc.REMOVE_PRODUCT_CART
+const USER_INFO = uc.USER_INFO
+const LIST_OF_ITEMS = uc.LIST_OF_ITEMS
+const USER_DETAILS = uc.USER_DETAILS
 
 export class HttpHelper extends BasePage {
     private wishList: string[] = [];
@@ -114,7 +116,7 @@ export class HttpHelper extends BasePage {
         });
         console.log(skus)
         return skus;
-    }            // skuObject[item.sku] = item.inStockSkuVariantsBy.color;
+    }
     getAllItemsNames = async (): Promise<Array<string>> => {
         return this.wishList
     }
@@ -130,5 +132,9 @@ export class HttpHelper extends BasePage {
         const temp = ls.filter((item) => item.product.thumbnail.label == name)
         return temp.length == 1
     }
-
+    getUserProfileName = async (): Promise<string | null> => {
+        const res: APIResponse = await api.post(USER_DETAILS)
+        const ds: UserDetails = await res.json()
+        return ds.data.customer.firstname
+    }
 }

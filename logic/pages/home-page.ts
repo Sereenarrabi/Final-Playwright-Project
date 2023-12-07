@@ -13,6 +13,7 @@ export class HomePage extends BasePage {
     private cartOptions: Locator
     private cartButton: Locator
     private itemNameCart: Locator
+    private profileName: Locator
 
     constructor(page: Page) {
         super(page)
@@ -21,6 +22,7 @@ export class HomePage extends BasePage {
         this.cartOptions = this.page.locator("//a[@data-test-id='qa-link-minicart']")
         this.cartButton = this.page.locator("//a[@data-test-id='qa-minicart-cart-button']")
         this.itemNameCart = this.page.locator("//a[@data-test-id='qa-cart-product-name']")
+        this.profileName = this.page.locator('//span[@class="profile-button-new-menu-underline_1fv_"]')
     }
 
     goto = async (): Promise<void> => {
@@ -64,6 +66,9 @@ export class HomePage extends BasePage {
     }
     getItemNameFromCartByIndex = async (num: number) => {
         return await this.itemNameCart.nth(num).textContent()
+    }
+    getProfileName = async (): Promise<string | null> => {
+        return await this.profileName.textContent()
     }
 
 
