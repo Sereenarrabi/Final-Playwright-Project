@@ -4,7 +4,6 @@ import { WomenSubCategory, PANTS } from './../logic/pages/Enums/WomenEnum/subCat
 import { Page, expect, test } from "@playwright/test"
 import { HomePage } from "../logic/pages/home-page"
 import { HttpHelper } from "../logic/requests/http-helper"
-import { before } from "node:test"
 import { Category } from '../logic/pages/Enums/CategoryEnum';
 import { Colors } from '../logic/pages/Enums/filterByEnum/ColorsEnum/Colors';
 import { ProductPage } from '../logic/pages/ProductsPage';
@@ -65,7 +64,6 @@ test.describe('Testing Terminal-X', async () => {
             const api = new HttpHelper(page)
             await api.addItemToCart("Z81883003001")
             await home.reload()
-            await home.clickOnCartIcon()
             await home.navigateToCartPage()
             let name = await home.getItemNameFromCartByIndex(0)
             expect(await api.verifyItemExistsInCart(name)).toBeTruthy()

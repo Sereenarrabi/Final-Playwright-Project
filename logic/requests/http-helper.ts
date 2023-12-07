@@ -1,6 +1,6 @@
 import { ApiService } from "../../infra/requests/api-service"
 import { createLogin, createUserinfoWithAllDetails } from "./interface/login-interface-req"
-import * as uc from "../../infra/res/user-cred.json"
+import * as uc from "../../infra/resources/user-cred.json"
 import { APIResponse, Page } from "playwright/test"
 import { BasePage } from "../pages/base-page"
 import { createShoe, addItemToCart } from "./interface/add-item-req"

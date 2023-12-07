@@ -1,5 +1,6 @@
 {
     "email": "josaca4731@dpsols.com",
     "password": "123456$Test",
-    "BASE_URL": "https://www.terminalx.com/"
+    "BASE_URL": "https://www.terminalx.com/",
+    "CART_URL": "https://www.terminalx.com/checkout/cart"
 }

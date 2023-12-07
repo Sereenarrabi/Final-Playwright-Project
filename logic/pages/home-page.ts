@@ -1,6 +1,7 @@
 import { Locator, Page } from "playwright/test";
 import { BasePage } from "./base-page";
-const BASE_URL = 'https://www.terminalx.com/';
+import * as uc from "../../infra/resources/user-cred.json"
+const BASE_URL = uc.BASE_URL;
 
 
 export class HomePage extends BasePage {
@@ -25,6 +26,9 @@ export class HomePage extends BasePage {
     goto = async (): Promise<void> => {
         await this.page.goto(BASE_URL)
     }
+    navigateToPage = async (url: string) => {
+
+    }
     clickOnCategoryFromNav = async (category: string) => {
         await this.categorySelectionFromNav(category).click()
     }
@@ -47,11 +51,15 @@ export class HomePage extends BasePage {
         return await this.itemNameWishlist.nth(num).textContent();
     }
     clickOnCartIcon = async () => {
-        await this.reloadWithRetries(5, "//a[@data-test-id='qa-link-minicart']")
+        await this.initPage()
+        await this.waitLocator("//a[@data-test-id='qa-link-minicart']")
         await this.cartOptions.click()
     }
     navigateToCartPage = async () => {
-        await this.reloadWithRetries(5, "//a[@data-test-id='qa-minicart-cart-button']")
+        await this.initPage()
+        await this.waitLocator("//a[@data-test-id='qa-link-minicart']")
+        await this.cartOptions.click()
+        await this.waitLocator("//a[@data-test-id='qa-minicart-cart-button']")
         await this.cartButton.click()
     }
     getItemNameFromCartByIndex = async (num: number) => {

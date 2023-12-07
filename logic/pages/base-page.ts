@@ -1,5 +1,6 @@
-import { Page } from "playwright";
-import * as js from '../../infra/res/user-login.json'
+import { Locator, Page } from "playwright";
+import * as js from '../../infra/resources/user-login.json'
+import { ExecException } from "child_process";
 
 const BASE_URL = js.BASE_URL;
 
@@ -20,11 +21,18 @@ export class BasePage {
         await this.page.reload()
     }
     reloadWithRetries = async (num: number, locator: string): Promise<void> => {
-        while (num != 0) {
+        if (num != 0) {
             await this.waitLocator(locator)
+            try {
+                await this.page.locator(locator).click()
+                return
+            }
+            catch {
+                console.log("failed to locate");
+
+            }
             num--
         }
-
     }
     waitTimeout = async (time: number): Promise<void> => {
         await this.page.waitForTimeout(time)
