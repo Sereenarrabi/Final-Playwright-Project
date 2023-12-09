@@ -9,21 +9,20 @@ export class HomePage extends BasePage {
     private subchose = (KidGender: string, clothingOption: string) => this.page.locator(`//ul/li/a[text() = '${KidGender}']/parent::li/ul/li/a[text() ='${clothingOption}']`)
     private subCat = (SubCategory: string, item: string) => this.page.locator(`//a[@href="${SubCategory}"]/parent::li/ul/li/a[text() = "${item}"]`)
     private wishListButton: Locator
-    private itemNameWishlist: Locator
+
     private cartOptions: Locator
     private cartButton: Locator
-    private itemNameCart: Locator
     private profileName: Locator
 
     constructor(page: Page) {
         super(page)
         this.wishListButton = this.page.locator("//a[@data-test-id='qa-link-wishlist']")
-        this.itemNameWishlist = this.page.locator("//a[@class='tx-link-a title_3ZxJ roboto-font_h7Lu tx-link_29YD underline-hover_3GkV']")
         this.cartOptions = this.page.locator("//a[@data-test-id='qa-link-minicart']")
         this.cartButton = this.page.locator("//a[@data-test-id='qa-minicart-cart-button']")
-        this.itemNameCart = this.page.locator("//a[@data-test-id='qa-cart-product-name']")
         this.profileName = this.page.locator('//span[@class="profile-button-new-menu-underline_1fv_"]')
     }
+
+
 
     goto = async (): Promise<void> => {
         await this.page.goto(BASE_URL)
@@ -49,9 +48,6 @@ export class HomePage extends BasePage {
     navigateToWishListPage = async () => {
         await this.wishListButton.click();
     }
-    getitemNameFromWishListByIndex = async (num: number) => {
-        return await this.itemNameWishlist.nth(num).textContent();
-    }
     clickOnCartIcon = async () => {
         await this.initPage()
         await this.waitLocator("//a[@data-test-id='qa-link-minicart']")
@@ -64,9 +60,7 @@ export class HomePage extends BasePage {
         await this.waitLocator("//a[@data-test-id='qa-minicart-cart-button']")
         await this.cartButton.click()
     }
-    getItemNameFromCartByIndex = async (num: number) => {
-        return await this.itemNameCart.nth(num).textContent()
-    }
+
     getProfileName = async (): Promise<string | null> => {
         return await this.profileName.textContent()
     }

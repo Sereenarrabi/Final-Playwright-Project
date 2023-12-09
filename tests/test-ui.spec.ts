@@ -3,7 +3,7 @@ import { Category } from "../logic/pages/Enums/CategoryEnum"
 import { WomenSubCategory, PANTS } from "../logic/pages/Enums/WomenEnum/subCategoryForWomen"
 import { Colors } from "../logic/pages/Enums/filterByEnum/ColorsEnum/Colors"
 import { FilterBy } from "../logic/pages/Enums/filterByEnum/ColorsEnum/filterBy"
-import { ProductPage } from "../logic/pages/ProductsPage"
+import { ProductPage } from "../logic/pages/products-page"
 import { HomePage } from "../logic/pages/home-page"
 
 test.describe("Ui Tests", async () => {
