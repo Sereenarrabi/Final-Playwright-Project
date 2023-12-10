@@ -10,5 +10,5 @@
     "REMOVE_PRODUCT_CART": "https://www.terminalx.com/pg/MutationRemoveItemFromAnyCart",
     "USER_INFO": "https://www.terminalx.com/pg/QueryCurrentUserInfo",
     "LIST_OF_ITEMS": "https://www.terminalx.com/a/listingSearch",
-    "USER_DETAISL": "https://www.terminalx.com/pg/QueryCustomerProfileInfo"
+    "USER_DETAILS": "https://www.terminalx.com/pg/QueryCustomerProfileInfo"
 }

@@ -9,7 +9,6 @@ export class HomePage extends BasePage {
     private subchose = (KidGender: string, clothingOption: string) => this.page.locator(`//ul/li/a[text() = '${KidGender}']/parent::li/ul/li/a[text() ='${clothingOption}']`)
     private subCat = (SubCategory: string, item: string) => this.page.locator(`//a[@href="${SubCategory}"]/parent::li/ul/li/a[text() = "${item}"]`)
     private wishListButton: Locator
-
     private cartOptions: Locator
     private cartButton: Locator
     private profileName: Locator
@@ -22,13 +21,8 @@ export class HomePage extends BasePage {
         this.profileName = this.page.locator('//span[@class="profile-button-new-menu-underline_1fv_"]')
     }
 
-
-
     goto = async (): Promise<void> => {
         await this.page.goto(BASE_URL)
-    }
-    navigateToPage = async (url: string) => {
-
     }
     clickOnCategoryFromNav = async (category: string) => {
         await this.categorySelectionFromNav(category).click()
