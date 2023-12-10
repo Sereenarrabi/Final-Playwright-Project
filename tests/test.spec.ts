@@ -70,7 +70,7 @@ test.describe('Testing Terminal-X', async () => {
             let name= await home.getItemNameFromCartByIndex(0)
             expect(await api.getCartItemName()).toBe(name)
         })
-        test("addd",async({page})=>{
+        test("add",async({page})=>{
             await home.hoverOverCategory(Category.WOMEN)
             await home.subCategorySelector(WomenSubCategory.WOMEN_PANTS,PANTS.JEANS)
             const product = new ProductPage(page)
@@ -78,6 +78,7 @@ test.describe('Testing Terminal-X', async () => {
             await product.selectColor(Colors.BLACK)
             await page.pause()
         })
+        
 
     })
 

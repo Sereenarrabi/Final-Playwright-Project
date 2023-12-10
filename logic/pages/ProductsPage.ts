@@ -34,6 +34,11 @@ export class ProductPage extends BasePage {
         await this.brandOption(brand).click()
 
     }
+    async haverOnItemByIndex (num:number) {
+        await this.itemsAfterFilter.nth(num).hover();
+        const locatorr = //button[text()="MY LIST"]
+
+    }
 
 
 }
