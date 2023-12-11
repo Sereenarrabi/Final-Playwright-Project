@@ -3,7 +3,7 @@ node_modules/
 /playwright-report/
 /blob-report/
 /playwright/.cache/
-infra/res/user-cred.json
+infra/resources/user-cred.json
 playwright/
 allure-report/
 allure-results/

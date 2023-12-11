@@ -1,0 +1,14 @@
+{
+    "email": "",
+    "password": "",
+    "BASE_URL": "https://www.terminalx.com/",
+    "LOGIN_URL ": "https://www.terminalx.com/pg/MutationUserLogin",
+    "ADD_PRODUCT_WISH_LIST_URL": "https://www.terminalx.com/pg/MutationAddProductsToWishlist",
+    "REMOVE_PRODUCT_WISH_LIST_URL": "https://www.terminalx.com/pg/MutationRemoveProductsFromAnyWishlistById",
+    "WISHLIST_DATA ": "https://www.terminalx.com/pg/QueryWishlist",
+    "ADD_PRODUCT_CART_URL": "https://www.terminalx.com/pg/MutationAddAnyProductsToAnyCart",
+    "REMOVE_PRODUCT_CART": "https://www.terminalx.com/pg/MutationRemoveItemFromAnyCart",
+    "USER_INFO": "https://www.terminalx.com/pg/QueryCurrentUserInfo",
+    "LIST_OF_ITEMS": "https://www.terminalx.com/a/listingSearch",
+    "USER_DETAILS": "https://www.terminalx.com/pg/QueryCustomerProfileInfo"
+}

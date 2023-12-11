@@ -7,11 +7,14 @@ export class ProductPage extends BasePage {
     private sizeSelect = (size: string) => this.page.locator(`//h4[contains(text(), 'מידה')]/parent::div/following-sibling::ol/li/a[text() = '${size}']`)
     private brandOption = (brand: string) => this.page.locator(`//h4[contains(text(), 'מותג')]/parent::div/following-sibling::ol/li/a[text() = '${brand}']`)
     private itemsAfterFilter: Locator
-
+    private myListButton :Locator;
+    private hoverimg:Locator;
 
     constructor(page: Page) {
         super(page)
         this.itemsAfterFilter = this.page.locator("//div[@class='image-div_3hfI']")
+        this.myListButton=this.page.locator('//button[text()="MY LIST"]');
+        this.hoverimg=this.page.locator('//a/div/div/img');
     }
 
     filterBy = async (by: string) => {
@@ -34,11 +37,16 @@ export class ProductPage extends BasePage {
         await this.brandOption(brand).click()
 
     }
-    async haverOnItemByIndex (num:number) {
-        await this.itemsAfterFilter.nth(num).hover();
-        const locatorr = //button[text()="MY LIST"]
+    AddItemToWishLess =async()=> {
+
+        await this.myListButton.click();
+
 
     }
+    hoveroverproduct=async (index:number) => {
+        await this.hoverimg.nth(index).hover();
 
+        
+    }
 
 }
